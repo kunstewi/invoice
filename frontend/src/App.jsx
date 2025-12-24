@@ -5,6 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "../context/AuthContext";
 import LandingPage from "../pages/LandingPage/LandingPage";
 import SignUp from "../pages/Auth/SignUp";
 import Login from "../pages/Auth/Login";
@@ -17,7 +18,7 @@ import ProfilePage from "../pages/Profile/ProfilePage";
 
 const App = () => {
   return (
-    <div>
+    <AuthProvider>
       <Router>
         <Routes>
           {/* Public Routes */}
@@ -26,13 +27,13 @@ const App = () => {
           <Route path="/login" element={<Login />} />
 
           {/* Protected Routes */}
-          <Route path="/" element={<ProtectedRoute />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/invoices" element={<AllInvoices />} />
-          <Route path="/invoices/new" element={<CreateInvoices />} />
-          <Route path="/invoices/:id" element={<InvoiceDetail />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/invoices" element={<AllInvoices />} />
+            <Route path="/invoices/new" element={<CreateInvoices />} />
+            <Route path="/invoices/:id" element={<InvoiceDetail />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
 
           {/* Catch All Route */}
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -40,14 +41,16 @@ const App = () => {
       </Router>
 
       <Toaster
+        position="top-right"
         toastOptions={{
           className: "",
           style: {
-            fontSize: "13px",
+            fontSize: "14px",
           },
+          duration: 3000,
         }}
       />
-    </div>
+    </AuthProvider>
   );
 };
 

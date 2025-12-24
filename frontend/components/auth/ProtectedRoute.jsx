@@ -1,19 +1,19 @@
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
-const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = true;
-  const loading = false;
+const ProtectedRoute = () => {
+  const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    // load spinner render
-    return <div>loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <DashboardLayout>{children ? children : <Outlet />}</DashboardLayout>;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;
